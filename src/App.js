@@ -7,12 +7,13 @@ import {
 } from 'react-router-dom'
 
 import { Navbar } from './app/Navbar'
-import PostsList from './components/posts/PostList'
+import PostsList from './components/posts/PostsList'
 import AddPostForm from './components/postForm/AddPostForm'
 import SinglePostPage from './components/posts/SinglePostPage'
 import EditPostForm from './components/postForm/EditPostForm'
 import UserList from './components/users/UserList'
 import UserPage from './components/users/UserPage'
+import NotificationsList from './components/notifications/notificationsList'
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
       <Navbar />
       <div className="App">
         <Switch>
+          <Route exact path="/notifications" component={NotificationsList} />
           <Route
             exact
             path="/"
