@@ -14,10 +14,14 @@ export const apiSlice = createApi({
     getPosts: builder.query({
       // The URL for the requests is `/fakeAPi/posts`
       query: () => `/posts`,
-      providesTags: ['Post'],
+      providesTags: (result = [], error, arg) => [
+        'Post',
+        ...result.map(({ id }) => ({ type: 'Post', id })),
+      ],
     }),
     getPost: builder.query({
       query: (postId) => `/posts/${postId}`,
+      providesTags: (result, error, arg) => [{ type: 'Post', id: arg }],
     }),
     addNewPost: builder.mutation({
       query: (initialPost) => ({
@@ -28,9 +32,21 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: ['Post'],
     }),
+    editPosts: builder.mutation({
+      query: (post) => ({
+        url: `/posts/${post.id}`,
+        method: 'PATCH',
+        body: post,
+      }),
+      invalidatesTags: (result, error, arg) => [{ type: 'Post', id: arg.id }],
+    }),
   }),
 })
 
 // Export the auto-generated hook for the `getsPosts` query endpoint
-export const { useGetPostsQuery, useGetPostQuery, useAddNewPostMutation } =
-  apiSlice
+export const {
+  useGetPostsQuery,
+  useGetPostQuery,
+  useAddNewPostMutation,
+  useEditPostsMutation,
+} = apiSlice
