@@ -5,7 +5,6 @@ import {
   useGetPostQuery,
   useEditPostsMutation,
 } from '../../features/api/apiSlice'
-import { postUpdated } from '../../features/posts/postsSlice'
 
 const EditPostForm = ({ match }) => {
   const { postId } = match.params
@@ -56,6 +55,7 @@ const EditPostForm = ({ match }) => {
       <button type="button" onClick={onSavePostClicked} disabled={isLoading}>
         Save Post
       </button>
+      {spinner}
     </section>
   )
 }

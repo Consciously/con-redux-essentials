@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
+
+import Spinner from '../Spinner'
 import { useAddNewPostMutation } from '../../features/api/apiSlice'
 import { selectAllUsers } from '../../features/users/usersSlice'
 
@@ -7,8 +9,8 @@ const AddPostForm = () => {
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
   const [userId, setUserId] = useState('')
-  const [addNewPost, { isLoading }] = useAddNewPostMutation()
 
+  const [addNewPost, { isLoading }] = useAddNewPostMutation()
   const users = useSelector(selectAllUsers)
 
   const onTitleChanged = (e) => setTitle(e.target.value)
@@ -24,8 +26,8 @@ const AddPostForm = () => {
         setTitle('')
         setContent('')
         setUserId('')
-      } catch (error) {
-        console.error('Failed to save the post ', error)
+      } catch (err) {
+        console.error('Failed to save the post: ', err)
       }
     }
   }
@@ -35,6 +37,8 @@ const AddPostForm = () => {
       {user.name}
     </option>
   ))
+
+  const spinner = isLoading ? <Spinner size="30px" /> : null
 
   return (
     <section>
@@ -61,12 +65,19 @@ const AddPostForm = () => {
           value={content}
           onChange={onContentChanged}
         />
-        <button type="button" onClick={onSavePostClicked} disabled={!canSave}>
-          Save Post
-        </button>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+          }}
+        >
+          <button type="button" onClick={onSavePostClicked} disabled={!canSave}>
+            Save Post
+          </button>
+          {spinner}
+        </div>
       </form>
     </section>
   )
 }
-
 export default AddPostForm
